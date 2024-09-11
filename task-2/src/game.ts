@@ -49,8 +49,9 @@ export function getPlayerMove() {
   }
 }
 
+
 /** Should return an outcome. Either "WIN", "LOSS" or "DRAW" */
-export function getOutcomeForRound(playerChoice, computerChoice) {
+export function getOutcomeForRound(playerChoice:string, computerChoice:string):string {
   const playerHasDrawn = playerChoice === computerChoice;
 
   if (playerHasDrawn) {
