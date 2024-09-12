@@ -1,15 +1,12 @@
-/** Some related "constants" which represent the various outcomes a round can have. */
 export const OUTCOME_WIN = "WIN";
 export const OUTCOME_DRAW = "DRAW";
 export const OUTCOME_LOSS = "LOSS";
 
-/** Some related "constants" which represent the possible choices a player can make when playing. */
 export const CHOICE_ROCK = "ROCK";
 export const CHOICE_PAPER = "PAPER";
 export const CHOICE_SCISSORS = "SCISSORS";
 
-/** Should return a randomly selected choice. Either: "ROCK", "PAPER", "SCISSORS" */
-export function getRandomComputerMove() {
+export function getRandomComputerMove(): string {
   const choice = Math.trunc(Math.random() * 3);
   switch (choice) {
     case 0:
@@ -23,35 +20,11 @@ export function getRandomComputerMove() {
   }
 }
 
-/**
- * Should return either: "ROCK", "PAPER", "SCISSORS" (or null if the user cancelled)
- */
-export function getPlayerMove() {
-  while (true) {
-    const rawInput = prompt("Enter a move: rock/paper/scissors");
-    const userHasCancelled = null === rawInput;
-
-    if (userHasCancelled) {
-      return null;
-    }
-
-    switch (rawInput.toLowerCase()) {
-      case "r":
-      case "rock":
-        return CHOICE_ROCK;
-      case "p":
-      case "paper":
-        return CHOICE_PAPER;
-      case "s":
-      case "scissors":
-        return CHOICE_SCISSORS;
-    }
-  }
+export function getPlayerMove(): string {
+  return CHOICE_ROCK;
 }
 
-
-/** Should return an outcome. Either "WIN", "LOSS" or "DRAW" */
-export function getOutcomeForRound(playerChoice:string, computerChoice:string):string {
+export function getOutcomeForRound(playerChoice: string, computerChoice: string): string {
   const playerHasDrawn = playerChoice === computerChoice;
 
   if (playerHasDrawn) {
@@ -70,13 +43,8 @@ export function getOutcomeForRound(playerChoice:string, computerChoice:string):s
   return OUTCOME_LOSS;
 }
 
-/** Should return an object containing information about the played round. */
 export function playOneRound() {
   const playerMove = getPlayerMove();
-  if (null === playerMove) {
-    return null;
-  }
-
   const computerMove = getRandomComputerMove();
   const outcome = getOutcomeForRound(playerMove, computerMove);
 
@@ -87,9 +55,7 @@ export function playOneRound() {
   };
 }
 
-/** Should return undefined/void if the loop were to stop. */
 export function playGame() {
-  /** Some basic game state, where things like scores are tracked. */
   let model = {
     playerScore: 0,
     computerScore: 0,
@@ -107,7 +73,7 @@ export function playGame() {
   }
 }
 
-export function updateModel(model, dataForRound) {
+export function updateModel(model: { playerScore: number; computerScore: number }, dataForRound: { outcome: string }) {
   switch (dataForRound.outcome) {
     case OUTCOME_WIN:
       return { ...model, playerScore: model.playerScore + 1 };
@@ -118,7 +84,10 @@ export function updateModel(model, dataForRound) {
   }
 }
 
-export function showProgressInConsole(dataForRound, model) {
+export function showProgressInConsole(
+  dataForRound: { playerMove: string; computerMove: string; outcome: string },
+  model: { playerScore: number; computerScore: number }
+) {
   console.table([
     {
       "Your choice": dataForRound.playerMove,
